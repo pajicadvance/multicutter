@@ -3,6 +3,7 @@ package me.pajic.modid.platform.neoforge;
 //? neoforge {
 /*
 import me.pajic.modid.ModTemplate;
+import me.pajic.modid.platform.Platform;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.repository.Pack;
@@ -25,9 +26,9 @@ public class NeoforgeEntrypoint {
 	@SubscribeEvent
 	private static void initCommonResources(AddPackFindersEvent event) {
 		event.addPackFinders(
-				ModTemplate.id("resourcepacks/" + ModTemplate.PACK_VERSION + "/dp"),
+				ModTemplate.id(ModTemplate.xplat().packPath(Platform.VersionedPackType.DATA)),
 				PackType.SERVER_DATA,
-				Component.literal("Mod " + ModTemplate.PACK_VERSION + " Data Pack"),
+				Component.literal("Mod " + ModTemplate.xplat().mcVersion() + " Data Pack"),
 				PackSource.BUILT_IN,
 				true,
 				Pack.Position.TOP

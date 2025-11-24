@@ -23,6 +23,11 @@ public class FabricPlatform implements Platform {
 	}
 
 	@Override
+	public String packPath(VersionedPackType versionedPackType) {
+		return mcVersion().replace(".", "_") + versionedPackType.getName();
+	}
+
+	@Override
 	public boolean isDebug() {
 		return FabricLoader.getInstance().isDevelopmentEnvironment();
 	}

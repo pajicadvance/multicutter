@@ -24,6 +24,11 @@ public class NeoforgePlatform implements Platform {
 	}
 
 	@Override
+	public String packPath(VersionedPackType versionedPackType) {
+		return "resourcepacks/" + mcVersion().replace(".", "_") + versionedPackType.getName();
+	}
+
+	@Override
 	public boolean isDebug() {
 		return !FMLLoader/^? if > 1.21.1 {^/.getCurrent()/^?}^/.isProduction();
 	}

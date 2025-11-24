@@ -23,6 +23,7 @@ public class ModConfig extends Config {
         super(ModTemplate.CONFIG_RL);
     }
 
+	public ExampleSection exampleSection = new ExampleSection();
 	public ValidatedBoolean exampleBoolean = new ValidatedBoolean(true);
 	public ValidatedInt exampleInt = new ValidatedInt(123, Integer.MAX_VALUE, 1);
 

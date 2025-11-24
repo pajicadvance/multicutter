@@ -9,7 +9,24 @@ public interface Platform {
 
 	String mcVersion();
 
+	String packPath(VersionedPackType versionedPackType);
+
 	enum ModLoader {
 		FABRIC, NEOFORGE, FORGE
+	}
+
+	enum VersionedPackType {
+		ASSETS("rp"),
+		DATA("dp");
+
+		private final String path;
+
+		VersionedPackType(String path) {
+			this.path = path;
+		}
+
+		public String getName() {
+			return "/" + path;
+		}
 	}
 }

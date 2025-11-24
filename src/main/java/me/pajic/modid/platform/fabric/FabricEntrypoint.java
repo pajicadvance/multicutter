@@ -3,6 +3,7 @@ package me.pajic.modid.platform.fabric;
 //? fabric {
 
 import me.pajic.modid.ModTemplate;
+import me.pajic.modid.platform.Platform;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
@@ -20,7 +21,7 @@ public class FabricEntrypoint implements ModInitializer {
 	private void initConditionalCommonResources() {
 		FabricLoader.getInstance().getModContainer(ModTemplate.MOD_ID).ifPresent(modContainer ->
 				ResourceManagerHelper.registerBuiltinResourcePack(
-						ModTemplate.id(ModTemplate.PACK_VERSION + "/dp"),
+						ModTemplate.id(ModTemplate.xplat().packPath(Platform.VersionedPackType.DATA)),
 						modContainer,
 						ResourcePackActivationType.ALWAYS_ENABLED
 				)
