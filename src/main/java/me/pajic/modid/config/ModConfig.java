@@ -13,7 +13,7 @@ import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedDouble;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedFloat;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
 import me.pajic.modid.ModTemplate;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import java.util.Map;
 
@@ -29,11 +29,11 @@ public class ModConfig extends Config {
 
 	public static class ExampleSection extends ConfigSection {
 		@SuppressWarnings({"unchecked", "rawtypes"})
-		public ValidatedMap<ResourceLocation, Float> exampleMap = (new ValidatedMap.Builder())
+		public ValidatedMap<Identifier, Float> exampleMap = (new ValidatedMap.Builder())
 				.keyHandler(new ValidatedIdentifier())
 				.valueHandler(new ValidatedFloat(0.7F, 1, 0))
 				.defaults(Map.of(
-						ResourceLocation.withDefaultNamespace("example_vanilla_id"), 0.3F,
+						Identifier.withDefaultNamespace("example_vanilla_id"), 0.3F,
 						ModTemplate.id("example_mod_id"), 0.97F
 				))
 				.build();

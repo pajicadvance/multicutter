@@ -3,7 +3,7 @@ package me.pajic.modid;
 import me.fzzyhmstrs.fzzy_config.api.ConfigApiJava;
 import me.pajic.modid.config.ModConfig;
 import me.pajic.modid.platform.Platform;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,7 +20,7 @@ public class ModTemplate {
 	public static final String MOD_VERSION = /*$ mod_version*/ "0.1.0";
 	public static final String MOD_FRIENDLY_NAME = /*$ mod_name*/ "modname";
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
-	public static final ResourceLocation CONFIG_RL = id("config");
+	public static final Identifier CONFIG_RL = id("config");
 	public static ModConfig CONFIG = ConfigApiJava.registerAndLoadConfig(ModConfig::new);
 	private static final Platform PLATFORM = createPlatformInstance();
 
@@ -42,8 +42,8 @@ public class ModTemplate {
 		*///?}
 	}
 
-	public static ResourceLocation id(String path) {
-		return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
+	public static Identifier id(String path) {
+		return Identifier.fromNamespaceAndPath(MOD_ID, path);
 	}
 
 	public static void debugLog(String message, Object ... args) {
