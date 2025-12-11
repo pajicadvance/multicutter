@@ -49,6 +49,7 @@ loom {
 }
 
 stonecutter {
+	filters.exclude("**/*.accesswidener", "**/*.cfg")
 	val dir = eval(current.version, ">1.21.10")
 	replacements.string {
 		direction = dir
