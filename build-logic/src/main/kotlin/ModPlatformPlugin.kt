@@ -37,11 +37,12 @@ fun RepositoryHandler.strictMaven(
 abstract class ModPlatformPlugin @Inject constructor() : Plugin<Project> {
 	override fun apply(project: Project) = with(project) {
 		val inferredLoader = project.buildFile.name.substringAfter('.').replace(".gradle.kts", "")
+		val isLegacyFabric = inferredLoader == "legacy-fabric"
 
 		val extension = extensions.create("platform", ModPlatformExtension::class.java).apply {
 			loader.convention(inferredLoader)
-			jarTask.convention("jar")
-			sourcesJarTask.convention("sourcesJar")
+			jarTask.convention(if (isLegacyFabric) "remapJar" else "jar")
+			sourcesJarTask.convention(if (isLegacyFabric) "remapSourcesJar" else "sourcesJar")
 		}
 
 		listOf(
@@ -75,7 +76,12 @@ abstract class ModPlatformPlugin @Inject constructor() : Plugin<Project> {
 
 		version = "$modVersion$channelTag+$mcVersion-$loader"
 
-		extension.requiredJava.set(JavaVersion.VERSION_25)
+		extension.requiredJava.set(
+			when {
+				stonecutter.eval(stonecutter.current.version, ">=26.1") -> JavaVersion.VERSION_25
+				else -> JavaVersion.VERSION_21
+			}
+		)
 
 		if (isFabric) {
 			extension.dependencies { required("java") { versionRange = ">=${extension.requiredJava.get().majorVersion}" } }

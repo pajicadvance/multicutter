@@ -28,7 +28,7 @@ public class ExampleAdvancedConfigEntry implements Walkable {
 	public ExampleAdvancedConfigEntry() {
 		this.identifier = ValidatedIdentifier.ofRegistry(Identifier.withDefaultNamespace("diamond"), BuiltInRegistries.ITEM);
 		this.string = new ValidatedString("", new AllowableStrings(
-				_ -> true,
+				s -> true,
 				() -> new ArrayList<>(List.of("s1", "s2", "s3"))
 		));
 		this.integer = new ValidatedInt(1, 64, 0);

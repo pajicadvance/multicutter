@@ -24,6 +24,12 @@ neoForge {
 	accessTransformers.from(rootProject.file("src/main/resources/aw/${stonecutter.current.version}.cfg"))
 	validateAccessTransformers = true
 
+	parchment {
+		val (mc, ver) = (property("deps.parchment") as String).split(':')
+		mappingsVersion = ver
+		minecraftVersion = mc
+	}
+
 	runs {
 		register("client") {
 			client()
@@ -51,14 +57,21 @@ repositories {
 	strictMaven("https://thedarkcolour.github.io/KotlinForForge/") { name = "KotlinForForge" }
 	strictMaven("https://jitpack.io") { name = "Jitpack" }
 	strictMaven("https://api.modrinth.com/maven", "maven.modrinth") { name = "Modrinth" }
+	ivy {
+		url = uri("https://github.com/xameryn/Mixson/releases/download/")
+		patternLayout {
+			artifact("[revision]/[module]-[revision]-${prop("deps.minecraft")}-neoforge.[ext]")
+		}
+		metadataSources { artifact() }
+	}
 }
 
 dependencies {
 	implementation(libs.moulberry.mixinconstraints)
 	jarJar(libs.moulberry.mixinconstraints)
 	implementation("me.fzzyhmstrs:fzzy_config:${prop("deps.fzzy_config")}+neoforge")
-	implementation("com.github.ramixin:mixson-neoforge:${prop("deps.mixson")}")
-	jarJar("com.github.ramixin:mixson-neoforge:${prop("deps.mixson")}")
+	implementation("com.github:Mixson:${prop("deps.mixson")}")
+	jarJar("com.github:Mixson:${prop("deps.mixson")}")
 }
 
 tasks.named("createMinecraftArtifacts") {
@@ -66,9 +79,9 @@ tasks.named("createMinecraftArtifacts") {
 }
 
 stonecutter {
-	replacements.string(current.parsed >= "26.1") {
+	replacements.string(current.parsed < "26.1") {
 		replace("ValidatedIdentifier", "ValidatedIdentifier")
-		replace("ResourceLocation", "Identifier")
-		replace("location()", "identifier()")
+		replace("Identifier", "ResourceLocation")
+		replace("identifier()", "location()")
 	}
 }

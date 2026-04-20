@@ -1,6 +1,6 @@
 plugins {
 	id("mod-platform")
-	id("net.fabricmc.fabric-loom")
+	id("fabric-loom")
 }
 
 platform {
@@ -47,30 +47,42 @@ repositories {
 	mavenCentral()
 	strictMaven("https://maven.fzzyhmstrs.me/", "me.fzzyhmstrs") { name = "Fzzy Config" }
 	strictMaven("https://maven.terraformersmc.com/", "com.terraformersmc") { name = "TerraformersMC" }
-	strictMaven("https://jitpack.io") { name = "Jitpack" }
 	strictMaven("https://api.modrinth.com/maven", "maven.modrinth") { name = "Modrinth" }
+	ivy {
+		url = uri("https://github.com/xameryn/Mixson/releases/download/")
+		patternLayout {
+			artifact("[revision]/[module]-[revision]-${prop("deps.minecraft")}-fabric.[ext]")
+		}
+		metadataSources { artifact() }
+	}
 }
 
 dependencies {
 	minecraft("com.mojang:minecraft:${prop("deps.minecraft")}")
-	implementation(libs.fabric.loader)
-	implementation(libs.moulberry.mixinconstraints)
+	@Suppress("UnstableApiUsage")
+	mappings(
+		loom.layered {
+			officialMojangMappings()
+			parchment("org.parchmentmc.data:parchment-${prop("deps.parchment")}@zip")
+		})
+	modImplementation(libs.fabric.loader)
+	modImplementation(libs.moulberry.mixinconstraints)
 	include(libs.moulberry.mixinconstraints)
-	implementation("net.fabricmc.fabric-api:fabric-api:${prop("deps.fabric-api")}")
-	localRuntime("com.terraformersmc:modmenu:${prop("deps.modmenu")}")
-	implementation("me.fzzyhmstrs:fzzy_config:${prop("deps.fzzy_config")}")
-	implementation("com.github.ramixin:mixson-fabric:${prop("deps.mixson")}") {
+	modImplementation("net.fabricmc.fabric-api:fabric-api:${prop("deps.fabric-api")}")
+	modLocalRuntime("com.terraformersmc:modmenu:${prop("deps.modmenu")}")
+	modImplementation("me.fzzyhmstrs:fzzy_config:${prop("deps.fzzy_config")}")
+	modImplementation("com.github:Mixson:${prop("deps.mixson")}") {
 		exclude(group = "net.fabricmc.fabric-api", module = "fabric-api")
 	}
-	include("com.github.ramixin:mixson-fabric:${prop("deps.mixson")}") {
+	include("com.github:Mixson:${prop("deps.mixson")}") {
 		exclude(group = "net.fabricmc.fabric-api", module = "fabric-api")
 	}
 }
 
 stonecutter {
-	replacements.string(current.parsed >= "26.1") {
+	replacements.string(current.parsed < "26.1") {
 		replace("ValidatedIdentifier", "ValidatedIdentifier")
-		replace("ResourceLocation", "Identifier")
-		replace("location()", "identifier()")
+		replace("Identifier", "ResourceLocation")
+		replace("identifier()", "location()")
 	}
 }

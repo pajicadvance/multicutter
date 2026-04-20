@@ -31,7 +31,8 @@ public class ModConfig extends Config {
 
 	public ModConfig() {
 		super(ModTemplate.id("config"));
-		ValidatedField.Companion.attachProvider(entry, Provider.Companion.getWIDGET_TITLE(), (ai, _) -> {
+		ValidatedField.Companion.attachProvider(entry, Provider.Companion.getWIDGET_TITLE(), (ai, c) -> {
+			//~ if < 26.1 'ITEM.getValue' -> 'ITEM.get'
 			Item item = BuiltInRegistries.ITEM.getValue(ai.identifier.get());
 			if (item == Items.AIR) return Component.literal(ai.identifier.get().toString());
 			return item.getName(new ItemStack(item));
