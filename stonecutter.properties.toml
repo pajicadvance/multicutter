@@ -35,10 +35,12 @@ publish.curseforge = ""
 
 ["1.21.1"]
 mod.mc_releases = ["1.21", "1.21.1"]
+runtime.sodium = "0.8.12+mc1.21.1"
 
 [fabric."1.21.1"]
 mod.mc_compat = ">=1.21 <=1.21.1"
-deps.fabric_api = "0.116.14+1.21.1"
+required.fabric_api = "0.116.14+1.21.1"
+runtime.modmenu = "11.0.4"
 
 [neoforge."1.21.1"]
 mod.mc_compat = "[1.21, 1.21.1]"
@@ -47,10 +49,12 @@ deps.neo_loader = "21.1.244"
 
 ["26.1"]
 mod.mc_releases = ["26.1", "26.1.1", "26.1.2"]
+runtime.sodium = "0.9.1+mc26.1.2"
 
 [fabric."26.1"]
 mod.mc_compat = "~26.1"
-deps.fabric_api = "0.155.2+26.1.2"
+required.fabric_api = "0.155.2+26.1.2"
+runtime.modmenu = "18.0.0"
 
 [neoforge."26.1"]
 mod.mc_compat = "[26.1, 26.2)"
@@ -59,10 +63,12 @@ deps.neo_loader = "26.1.2.87"
 
 ["26.2"]
 mod.mc_releases = ["26.2"]
+runtime.sodium = "0.9.1+mc26.2"
 
 [fabric."26.2"]
 mod.mc_compat = "~26.2"
-deps.fabric_api = "0.155.2+26.2"
+required.fabric_api = "0.155.2+26.2"
+runtime.modmenu = "20.0.1"
 
 #[neoforge."26.2"]
 #mod.mc_compat = "[26.2, 26.3)"

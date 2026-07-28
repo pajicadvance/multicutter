@@ -29,6 +29,9 @@ repositories {
     }
     strictMaven("https://www.cursemaven.com", "CurseForge", "curse.maven")
     strictMaven("https://api.modrinth.com/maven", "Modrinth", "maven.modrinth")
+    strictMaven("https://maven.terraformersmc.com/", "TerraformersMC", "com.terraformersmc")
+    strictMaven("https://maven.caffeinemc.net/releases", "CaffeineMC", "net.caffeinemc")
+    strictMaven("https://maven.su5ed.dev/releases", "Sinytra", "org.sinytra.forgified-fabric-api")
 }
 
 dependencies {
@@ -36,21 +39,20 @@ dependencies {
     loomx.applyMojangMappings()
     if (fabric) {
         modImplementation("net.fabricmc:fabric-loader:${property("deps.fabric_loader")}")
-        modImplementation("net.fabricmc.fabric-api:fabric-api:${property("deps.fabric_api")}")
+        modImplementation("net.fabricmc.fabric-api:fabric-api:${property("required.fabric_api")}")
+        modRuntimeOnly("com.terraformersmc:modmenu:${property("runtime.modmenu")}")
     } else {
         forgeUserdev("net.neoforged:neoforge:${property("deps.neo_loader")}:userdev")
     }
+    modRuntimeOnly("net.caffeinemc:sodium-${loader}:${property("runtime.sodium")}")
 }
 
 loom {
     @Suppress("UnstableApiUsage")
     if (fabric) {
         fabricModJsonPath = rootProject.file("src/main/resources/fabric.mod.json")
-        accessWidenerPath = sc.process(
-            rootProject.file("src/main/resources/${property("mod.id")}.ct"),
-            "build/processed.ct"
-        )
-    } else convertAw2At(loomx.modJar, listOf("${property("mod.id")}.ct"))
+        accessWidenerPath = rootProject.file("src/main/resources/ct/${sc.current.version}.ct")
+    } else convertAw2At(loomx.modJar, listOf("ct/${sc.current.version}.ct"))
 
     decompilerOptions.named("vineflower") {
         options.put("mark-corresponding-synthetics", "1")
@@ -60,7 +62,6 @@ loom {
         preferGradleTask = true
         generateRunConfig = true
         runDirectory = rootProject.file("run")
-        jvmArguments.add("-Dmixin.debug.export=true")
     }
 }
 
@@ -93,6 +94,8 @@ tasks {
 
         val f = "fabric.mod.json"
         val n = "META-INF/neoforge.mods.toml"
+        val ct = "ct/${sc.current.version}.ct"
+        val mixinJava = "JAVA_${requiredJava.majorVersion}"
 
         val props = buildMap {
             register("id", "mod.id")
@@ -108,14 +111,15 @@ tasks {
             register("discord_url", "mod.discord_url")
             register("authors", "mod.authors")
             register("contributors", "mod.contributors")
+            inputs.property("ct", ct)
+            put("ct", ct)
         }
 
         filesMatching(if (fabric) f else n) { expand(props) }
-
-        val mixinJava = "JAVA_${requiredJava.majorVersion}"
         filesMatching("*.mixins.json") { expand("java" to mixinJava) }
 
         exclude(if (fabric) n else f)
+        exclude { it.path.startsWith("ct/") && it.path != ct }
     }
 
     register<Copy>("buildAndCollect") {

@@ -20,14 +20,11 @@ stonecutter parameters {
     dependencies["fapi"] = properties.getOrNull<String>("deps.fabric_api") ?: "0"
 
     replacements {
+        filters.exclude("**/*.ct")
         string(current.parsed >= "1.21.11") {
             replace("ValidatedIdentifier", "ValidatedIdentifier")
             replace("ResourceLocation", "Identifier")
             replace("location()", "identifier()")
-        }
-
-        string(current.parsed >= "26.1") {
-            replace("classTweaker v2 named", "classTweaker v2 official")
         }
     }
 }

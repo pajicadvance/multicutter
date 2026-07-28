@@ -25,7 +25,7 @@
   "mixins": [
     "${id}.mixins.json"
   ],
-  "accessWidener": "modid.ct",
+  "accessWidener": "${ct}",
   "depends": {
     "fabricloader": ">=0.17",
     "minecraft": "${minecraft}"
