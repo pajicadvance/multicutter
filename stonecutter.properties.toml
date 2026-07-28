@@ -1,0 +1,69 @@
+mod.id = "modid"
+mod.name = "Template mod"
+mod.group = "me.pajic"
+mod.version = "1.0.0"
+mod.description = ""
+mod.authors = "pajic"
+mod.contributors = ""
+mod.license = "MIT"
+
+mod.sources_url = "https://github.com/pajicadvance/modid"
+mod.homepage_url = "https://modrinth.com/mod/modid"
+mod.issues_url = "https://github.com/pajicadvance/modid/issues"
+mod.discord_url = "https://discord.gg/5RkzS66zWb"
+
+deps.fabric_loader = "0.19.3"
+loomx.loom_version = "1.17-SNAPSHOT"
+loomx.loom_remap_plugin = "org.relativitymc.neo-loom-remap"
+loomx.loom_unobf_plugin = "org.relativitymc.neo-loom"
+
+#CLIENT_ONLY
+#SERVER_ONLY
+#DEDICATED_SERVER_ONLY
+#CLIENT_AND_SERVER
+#SERVER_ONLY_CLIENT_OPTIONAL
+#CLIENT_ONLY_SERVER_OPTIONAL
+#CLIENT_OR_SERVER_PREFERS_BOTH
+#CLIENT_OR_SERVER
+#SINGLEPLAYER_ONLY
+publish.env.mr = "CLIENT_AND_SERVER"
+publish.env.cf.client = true
+publish.env.cf.server = true
+publish.modrinth = ""
+publish.curseforge = ""
+
+
+["1.21.1"]
+mod.mc_releases = ["1.21", "1.21.1"]
+
+[fabric."1.21.1"]
+mod.mc_compat = ">=1.21 <=1.21.1"
+deps.fabric_api = "0.116.14+1.21.1"
+
+[neoforge."1.21.1"]
+mod.mc_compat = "[1.21, 1.21.1]"
+deps.neo_loader = "21.1.244"
+
+
+["26.1"]
+mod.mc_releases = ["26.1", "26.1.1", "26.1.2"]
+
+[fabric."26.1"]
+mod.mc_compat = "~26.1"
+deps.fabric_api = "0.155.2+26.1.2"
+
+[neoforge."26.1"]
+mod.mc_compat = "[26.1, 26.2)"
+deps.neo_loader = "26.1.2.87"
+
+
+["26.2"]
+mod.mc_releases = ["26.2"]
+
+[fabric."26.2"]
+mod.mc_compat = "~26.2"
+deps.fabric_api = "0.155.2+26.2"
+
+#[neoforge."26.2"]
+#mod.mc_compat = "[26.2, 26.3)"
+#deps.neo_loader = "26.2.0.36-beta"
