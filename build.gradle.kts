@@ -2,6 +2,7 @@ import java.util.Locale
 import me.modmuss50.mpp.platforms.modrinth.ModrinthEnvironment
 
 plugins {
+    `kotlin-dsl`
     kotlin("jvm") version "2.2.10"
     id("com.google.devtools.ksp") version "2.2.10-2.0.2"
     id("dev.kikugie.loom-back-compat")
@@ -23,6 +24,7 @@ val compatibleVersions: List<String> = sc.properties.rawOrNull("mod", "mc_releas
     ?.asList().orEmpty().map { it.toString() }
 
 repositories {
+    mavenCentral()
     fun strictMaven(url: String, alias: String, vararg groups: String) = exclusiveContent {
         forRepository { maven(url) { name = alias } }
         filter { groups.forEach(::includeGroup) }
