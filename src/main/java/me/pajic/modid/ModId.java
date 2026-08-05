@@ -1,5 +1,9 @@
 package me.pajic.modid;
 
+import me.fzzyhmstrs.fzzy_config.api.ConfigApiJava;
+import me.pajic.modid.config.ModConfig;
+import me.pajic.modid.mixson.AssetPatches;
+import me.pajic.modid.mixson.DataPatches;
 import me.pajic.modid.platform.MultiLoaderUtil;
 import net.minecraft.resources.Identifier;
 import org.slf4j.Logger;
@@ -7,15 +11,16 @@ import org.slf4j.LoggerFactory;
 
 public class ModId {
 
-    public static final Logger LOGGER = LoggerFactory.getLogger("template");
     public static final String MOD_ID = /*$ mod_id*/ "modid";
+    public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
+    public static ModConfig CONFIG = ConfigApiJava.registerAndLoadConfig(ModConfig::new);
 
     public static void onInitialize() {
-        LOGGER.info("Hello game!");
+        DataPatches.init();
     }
 
     public static void onInitializeClient() {
-        LOGGER.info("Hello client!");
+        AssetPatches.init();
     }
 
     public static Identifier id(String path) {

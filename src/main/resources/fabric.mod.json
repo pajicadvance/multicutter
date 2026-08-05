@@ -26,8 +26,6 @@
     "${id}.mixins.json"
   ],
   "accessWidener": "${ct}",
-  "depends": {
-    "fabricloader": ">=0.17",
-    "minecraft": "${minecraft}"
-  }
+  "depends": {},
+  "suggests": {}
 }

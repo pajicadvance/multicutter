@@ -1,3 +1,4 @@
+# general
 mod.id = "modid"
 mod.name = "Template mod"
 mod.group = "me.pajic"
@@ -7,69 +8,90 @@ mod.authors = "pajic"
 mod.contributors = ""
 mod.license = "MIT"
 
+# links
 mod.sources_url = "https://github.com/pajicadvance/modid"
 mod.homepage_url = "https://modrinth.com/mod/modid"
 mod.issues_url = "https://github.com/pajicadvance/modid/issues"
 mod.discord_url = "https://discord.gg/5RkzS66zWb"
 
-deps.fabric_loader = "0.19.3"
+# publishing
+publish.modrinth = ""
+publish.curseforge = ""
+publish.env.mr = "CLIENT_AND_SERVER" #https://modmuss50.github.io/mod-publish-plugin/platforms/modrinth/#all-options
+publish.env.cf.client = true
+publish.env.cf.server = true
+publish.dry_run = true
+
+# config
+config.run_optional_deps = true
+
+# loom
 loomx.loom_version = "1.17-SNAPSHOT"
 loomx.loom_remap_plugin = "org.relativitymc.neo-loom-remap"
 loomx.loom_unobf_plugin = "org.relativitymc.neo-loom"
 
-#CLIENT_ONLY
-#SERVER_ONLY
-#DEDICATED_SERVER_ONLY
-#CLIENT_AND_SERVER
-#SERVER_ONLY_CLIENT_OPTIONAL
-#CLIENT_ONLY_SERVER_OPTIONAL
-#CLIENT_OR_SERVER_PREFERS_BOTH
-#CLIENT_OR_SERVER
-#SINGLEPLAYER_ONLY
-publish.env.mr = "CLIENT_AND_SERVER"
-publish.env.cf.client = true
-publish.env.cf.server = true
-publish.modrinth = ""
-publish.curseforge = ""
+# dependencies
+loader.fabric = "0.19.3"
+dep.mixinconstraints.coords = "com.moulberry:$id"
+dep.fzzy_config.coords = "me.fzzyhmstrs:$id"
+dep.fzzy_config.slug = "fzzy-config"
+dep.sodium.coords = "net.caffeinemc:$id-$loader"
+include.mixinconstraints = "1.1.0"
+
+[fabric]
+dep.fabric-api.coords = "net.fabricmc.fabric-api:$id"
+dep.modmenu.coords = "com.terraformersmc:$id"
+
+[neoforge]
 
 
 ["1.21.1"]
 mod.mc_releases = ["1.21", "1.21.1"]
+loader.neo = "21.1.244"
+dep.mixson.coords = "com.github:Mixson"
+required.fzzy_config = "0.7.6+1.21"
+include.mixson = "2.1.0"
 runtime.sodium = "0.8.12+mc1.21.1"
 
 [fabric."1.21.1"]
 mod.mc_compat = ">=1.21 <=1.21.1"
-required.fabric_api = "0.116.14+1.21.1"
+required.fabric-api = "0.116.14+1.21.1"
 runtime.modmenu = "11.0.4"
 
 [neoforge."1.21.1"]
 mod.mc_compat = "[1.21, 1.21.1]"
-deps.neo_loader = "21.1.244"
 
 
 ["26.1"]
 mod.mc_releases = ["26.1", "26.1.1", "26.1.2"]
+loader.neo = "26.1.2.87"
+dep.mixson.coords = "maven.modrinth:$id"
+required.fzzy_config = "0.7.6+26.1-pre-3"
+required.mixson = "2.2.0"
 runtime.sodium = "0.9.1+mc26.1.2"
 
 [fabric."26.1"]
 mod.mc_compat = "~26.1"
-required.fabric_api = "0.155.2+26.1.2"
+required.fabric-api = "0.155.2+26.1.2"
 runtime.modmenu = "18.0.0"
 
 [neoforge."26.1"]
 mod.mc_compat = "[26.1, 26.2)"
-deps.neo_loader = "26.1.2.87"
 
 
 ["26.2"]
 mod.mc_releases = ["26.2"]
+loader.neo = "26.2.0.36-beta"
+dep.mixson.coords = "maven.modrinth:$id"
+required.fzzy_config = "0.7.6+26.2-pre-3"
+required.mixson = "2.2.0"
 runtime.sodium = "0.9.1+mc26.2"
 
 [fabric."26.2"]
 mod.mc_compat = "~26.2"
-required.fabric_api = "0.155.2+26.2"
+required.fabric-api = "0.155.2+26.2"
 runtime.modmenu = "20.0.1"
 
 #[neoforge."26.2"]
 #mod.mc_compat = "[26.2, 26.3)"
-#deps.neo_loader = "26.2.0.36-beta"
+#loader.neo = "26.2.0.36-beta"
