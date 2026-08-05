@@ -8,12 +8,13 @@
 - Automatic Mixin and entrypoint registration
 - Automated Modrinth and CurseForge publishing
 
+### Pre-configured content
 
-- Pre-configured versions:
+- Versions:
     - 1.21.1 Fabric and NeoForge
     - 26.1 Fabric and NeoForge
     - 26.2 Fabric
-- Pre-configured dependencies:
+- Dependencies:
     - Fabric API (required)
     - Fzzy Config (required)
     - Mixson (required)
