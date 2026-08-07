@@ -62,7 +62,7 @@ runtime.modmenu = "11.0.4"
 mod.mc_compat = "[1.21, 1.21.1]"
 
 
-["26.1"]
+["26.1.2"]
 mod.mc_releases = ["26.1", "26.1.1", "26.1.2"]
 loader.neo = "26.1.2.87"
 dep.mixson.coords = "maven.modrinth:$id"
@@ -70,12 +70,12 @@ required.fzzy_config = "0.7.6+26.1-pre-3"
 required.mixson = "2.2.0"
 runtime.sodium = "0.9.1+mc26.1.2"
 
-[fabric."26.1"]
+[fabric."26.1.2"]
 mod.mc_compat = "~26.1"
 required.fabric-api = "0.155.2+26.1.2"
 runtime.modmenu = "18.0.0"
 
-[neoforge."26.1"]
+[neoforge."26.1.2"]
 mod.mc_compat = "[26.1, 26.2)"
 
 

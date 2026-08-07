@@ -6,7 +6,7 @@ package me.pajic.modid.platform.neoforge;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.loading.FMLLoader;
 
-public class NeoForgeLoaderUtil implements MultiLoaderUtil {
+public class NeoforgeLoaderUtil implements MultiLoaderUtil {
 
     @Override
     public boolean isModLoaded(String modId) {

@@ -12,7 +12,7 @@
 
 - Versions:
     - 1.21.1 Fabric and NeoForge
-    - 26.1 Fabric and NeoForge
+    - 26.1.2 Fabric and NeoForge
     - 26.2 Fabric
 - Dependencies:
     - Fabric API (required)

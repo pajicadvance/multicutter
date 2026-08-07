@@ -1,18 +1,10 @@
 package me.pajic.modid.platform;
 
-//? fabric {
+//$ loader_util_import
 import me.pajic.modid.platform.fabric.FabricLoaderUtil;
-//?} neoforge {
-/*import me.pajic.modid.platform.neoforge.NeoForgeLoaderUtil;
-*///?}
 
 public interface MultiLoaderUtil {
-    MultiLoaderUtil INSTANCE =
-            //? fabric {
-            new FabricLoaderUtil();
-            //?} neoforge {
-            /*new NeoForgeLoaderUtil();
-            *///?}
+    MultiLoaderUtil INSTANCE = /*$ loader_util_inst*/ new FabricLoaderUtil();
 
     boolean isModLoaded(String modId);
     boolean isDevEnv();
