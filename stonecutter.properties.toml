@@ -22,9 +22,6 @@ publish.env.cf.client = true
 publish.env.cf.server = true
 publish.dry_run = true
 
-# config
-config.run_optional_deps = true
-
 # loom
 loomx.loom_version = "1.17-SNAPSHOT"
 loomx.loom_remap_plugin = "org.relativitymc.neo-loom-remap"
@@ -37,6 +34,7 @@ dep.fzzy_config.coords = "me.fzzyhmstrs:$id"
 dep.fzzy_config.slug = "fzzy-config"
 dep.sodium.coords = "net.caffeinemc:$id-$loader"
 include.mixinconstraints = "1.1.0"
+dev.runtime_optionals = []
 
 [fabric]
 dep.fabric-api.coords = "net.fabricmc.fabric-api:$id"

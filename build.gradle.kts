@@ -43,6 +43,8 @@ val requiredJava: JavaVersion = when {
 
 val compatibleVersions: List<String> = sc.properties.rawOrNull("mod", "mc_releases")
     ?.asList().orEmpty().map { it.toString() }
+val runtimeOptionals: List<String> = sc.properties.rawOrNull("dev", "runtime_optionals")
+    ?.asList().orEmpty().map { it.toString() }
 
 data class ModDep(val key: String, val version: String) {
     private fun meta(suffix: String): String? = findProperty("dep.$key.$suffix")?.toString()?.takeIf { it.isNotBlank() }
@@ -123,7 +125,7 @@ dependencies {
     includeDeps.forEach { it.declare("modImplementation", "include")}
     optionalDeps.forEach {
         it.declare("modCompileOnly")
-        if ((property("config.run_optional_deps") as String).toBooleanStrict()) {
+        if (runtimeOptionals.contains(it.key)) {
             it.declare("modRuntimeOnly")
         }
     }
