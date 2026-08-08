@@ -114,7 +114,7 @@ dependencies {
     if (fabric) { modImplementation("net.fabricmc:fabric-loader:${property("loader.fabric")}") }
     else { forgeUserdev("net.neoforged:neoforge:${property("loader.neo")}:userdev") }
     fun ModDep.declare(vararg configurations: String) {
-        val notation = "${coords ?: return}:$version"
+        val notation = (coords ?: return).replace($$"$version", version)
         configurations.forEach {
             conf -> conf(notation) {
                 if (id != "fabric-api") exclude(group = "net.fabricmc.fabric-api")
