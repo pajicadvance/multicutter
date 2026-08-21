@@ -133,11 +133,10 @@ dependencies {
 }
 
 loom {
+    fabricModJsonPath = rootProject.file("src/main/resources/fabric.mod.json")
+    accessWidenerPath = rootProject.file("src/main/resources/ct/${sc.current.version}.ct")
     @Suppress("UnstableApiUsage")
-    if (fabric) {
-        fabricModJsonPath = rootProject.file("src/main/resources/fabric.mod.json")
-        accessWidenerPath = rootProject.file("src/main/resources/ct/${sc.current.version}.ct")
-    } else convertAw2At(loomx.modJar, listOf("ct/${sc.current.version}.ct"))
+    convertAw2At(loomx.modJar, listOf("ct/${sc.current.version}.ct"))
 
     decompilerOptions.named("vineflower") {
         options.put("mark-corresponding-synthetics", "1")
