@@ -1,20 +1,17 @@
 @file:Suppress("AvoidDuplicateDependencies")
 import me.modmuss50.mpp.platforms.modrinth.ModrinthEnvironment
-import java.util.Locale
 
 plugins {
-    `kotlin-dsl`
-    kotlin("jvm") version "2.3.21"
-    id("com.google.devtools.ksp") version "2.3.10"
-    id("dev.kikugie.loom-back-compat")
-    id("dev.kikugie.fletching-table.fabric") version "0.1.0-alpha.22"
-    id("me.modmuss50.mod-publish-plugin") version "2.1.1"
+    kotlin("jvm")
+    id("com.google.devtools.ksp")
+    id("dev.kikugie.fletching-table.fabric")
+    id("me.modmuss50.mod-publish-plugin")
+    id("net.neoforged.moddev") version "2.0.141"
+    id("neoforge-mutex")
 }
 
-val loader = sc.current.project.substringAfter('-')
-val fabric = loader == "fabric"
 version = "${property("mod.version")}+${sc.current.version}"
-base.archivesName = "${property("mod.id") as String}-${loader}"
+base.archivesName = "${property("mod.id") as String}-neoforge"
 
 repositories {
     mavenCentral()
@@ -27,16 +24,18 @@ repositories {
     strictMaven("https://maven.terraformersmc.com/", "TerraformersMC", "com.terraformersmc")
     strictMaven("https://maven.caffeinemc.net/releases", "CaffeineMC", "net.caffeinemc")
     strictMaven("https://maven.su5ed.dev/releases", "Sinytra", "org.sinytra.forgified-fabric-api")
+    strictMaven("https://thedarkcolour.github.io/KotlinForForge/", "Kotlin Forge")
+    strictMaven("https://repo.nyon.dev/releases", "Kotlin Forge Again")
     ivy {
         url = uri("https://github.com/xameryn/Mixson/releases/download/")
         patternLayout {
-            artifact("[revision]/[module]-[revision]-${sc.current.version}-${loader}.[ext]")
+            artifact("[revision]/[module]-[revision]-${sc.current.version}-neoforge.[ext]")
         }
         metadataSources { artifact() }
     }
 }
 
-val requiredJava: JavaVersion = when {
+val requiredJava = when {
     sc.current.parsed >= "26.1" -> JavaVersion.VERSION_25
     else -> JavaVersion.VERSION_21
 }
@@ -49,9 +48,9 @@ val runtimeOptionals: List<String> = sc.properties.rawOrNull("dev", "runtime_opt
 data class ModDep(val key: String, val version: String) {
     private fun meta(suffix: String): String? = findProperty("dep.$key.$suffix")?.toString()?.takeIf { it.isNotBlank() }
     val id: String get() = meta("id") ?: key
-    val coords: String? get() = meta("coords")?.replace($$"$id", id)?.replace($$"$loader", loader)
+    val coords: String? get() = meta("coords")?.replace($$"$id", id)?.replace($$"$loader", "neoforge")
     val base: String get() = version.substringBefore('+').substringBefore("-beta")
-    val range: String get() = meta("range") ?: if (fabric) ">=$base" else "[$base,)"
+    val range: String get() = meta("range") ?: "[$base,)"
     fun slug(platform: String): String = meta("slug.$platform") ?: meta("slug") ?: key
 }
 
@@ -84,15 +83,6 @@ fun jsonObject(entries: List<Pair<String, String>>): String =
     if (entries.isEmpty()) "{}"
     else entries.joinToString(",\n    ", "{\n    ", "\n  }") { (k, v) -> "\"$k\": \"$v\"" }
 
-val fabricDepends = jsonObject(
-    buildList {
-        add("minecraft" to sc.properties["mod.mc_compat"])
-        add("fabricloader" to ">=${property("loader.fabric")}")
-        add("java" to ">=${requiredJava.majorVersion}")
-        requiredDeps.forEach { add(it.id to it.range) }
-    }
-)
-val fabricSuggests = jsonObject(optionalDeps.map { it.id to it.range })
 val neoDependencies = buildString {
     val modId = property("mod.id")
     fun block(id: String, range: String, type: String) {
@@ -109,10 +99,6 @@ val neoDependencies = buildString {
 }.trimEnd()
 
 dependencies {
-    minecraft("com.mojang:minecraft:${sc.current.version}")
-    loomx.applyMojangMappings()
-    if (fabric) { modImplementation("net.fabricmc:fabric-loader:${property("loader.fabric")}") }
-    else { forgeUserdev("net.neoforged:neoforge:${property("loader.neo")}:userdev") }
     fun ModDep.declare(vararg configurations: String) {
         val notation = (coords ?: return).replace($$"$version", version)
         configurations.forEach {
@@ -121,31 +107,37 @@ dependencies {
             }
         }
     }
-    requiredDeps.forEach { it.declare("modImplementation") }
-    includeDeps.forEach { it.declare("modImplementation", "include")}
+    requiredDeps.forEach { it.declare("implementation") }
+    includeDeps.forEach { it.declare("implementation", "jarJar")}
     optionalDeps.forEach {
-        it.declare("modCompileOnly")
+        it.declare("compileOnly")
         if (runtimeOptionals.contains(it.key)) {
-            it.declare("modRuntimeOnly")
+            it.declare("runtimeOnly")
         }
     }
-    runtimeDeps.forEach { it.declare("modRuntimeOnly") }
+    runtimeDeps.forEach { it.declare("runtimeOnly") }
 }
 
-loom {
-    fabricModJsonPath = rootProject.file("src/main/resources/fabric.mod.json")
-    accessWidenerPath = rootProject.file("src/main/resources/ct/${sc.current.version}.ct")
-    @Suppress("UnstableApiUsage")
-    convertAw2At(loomx.modJar, listOf("ct/${sc.current.version}.ct"))
+neoForge {
+    version = property("loader.neo") as String
+    accessTransformers.from(rootProject.file("src/main/resources/aw/${sc.current.version}.cfg"))
+    validateAccessTransformers = true
 
-    decompilerOptions.named("vineflower") {
-        options.put("mark-corresponding-synthetics", "1")
+    mods {
+        register(property("mod.id") as String) {
+            sourceSet(sourceSets.main.get())
+        }
     }
 
-    runConfigs.all {
-        preferGradleTask = true
-        generateRunConfig = true
-        runDirectory = rootProject.file("run")
+    runs {
+        register("client") {
+            gameDirectory = file("../../run/${sc.current.version.replace(".", "_")}_neoforge/")
+            client()
+        }
+        register("server") {
+            gameDirectory = file("../../run/${sc.current.version.replace(".", "_")}_neoforge/")
+            server()
+        }
     }
 }
 
@@ -176,12 +168,8 @@ tasks {
             set(key, value)
         }
 
-        val f = "fabric.mod.json"
-        val n = "META-INF/neoforge.mods.toml"
-        val ct = "ct/${sc.current.version}.ct"
+        val at = "aw/${sc.current.version}.cfg"
         val mixinJava = "JAVA_${requiredJava.majorVersion}"
-        val depends = fabricDepends
-        val suggests = fabricSuggests
         val neoDepends = neoDependencies
 
         val props = buildMap {
@@ -198,29 +186,21 @@ tasks {
             register("discord_url", "mod.discord_url")
             register("authors", "mod.authors")
             register("contributors", "mod.contributors")
-            inputs.property("ct", ct)
-            put("ct", ct)
-            if (fabric) {
-                inputs.property("depends", depends)
-                inputs.property("suggests", suggests)
-            } else {
-                inputs.property("dependencies", neoDepends)
-                put("dependencies", neoDepends)
-            }
+            inputs.property("at", at)
+            put("at", at)
+            inputs.property("dependencies", neoDepends)
+            put("dependencies", neoDepends)
         }
 
-        filesMatching(if (fabric) f else n) { expand(props) }
-        if (fabric) filesMatching(f) {
-            filter { line -> line
-                .replace("\"depends\": {}", "\"depends\": $depends")
-                .replace("\"suggests\": {}", "\"suggests\": $suggests")
-            }
-        }
-
+        filesMatching("META-INF/neoforge.mods.toml") { expand(props) }
         filesMatching("*.mixins.json") { expand("java" to mixinJava) }
 
-        exclude(if (fabric) n else f)
-        exclude { it.path.startsWith("ct/") && it.path != ct }
+        exclude("fabric.mod.json")
+        exclude { it.path.startsWith("aw/") && it.path != at }
+    }
+
+    named("createMinecraftArtifacts") {
+        dependsOn("stonecutterGenerate")
     }
 
     register<Copy>("buildAndCollect") {
@@ -228,18 +208,18 @@ tasks {
         description = "Builds mod jars and copies results to `build/libs/{mod version}/`"
 
         inputs.property("version", project.property("mod.version"))
-        from(loomx.modJar.flatMap { it.archiveFile }, loomx.modSourcesJar.flatMap { it.archiveFile })
+        from(jar.flatMap { it.archiveFile }, named<Jar>("sourcesJar").flatMap { it.archiveFile })
         into(rootProject.layout.buildDirectory.file("libs/${project.property("mod.version")}"))
     }
 }
 
 publishMods {
-    file.set(loomx.modJar.get().archiveFile)
-    additionalFiles.from(loomx.modSourcesJar.get().archiveFile)
+    file = tasks.jar.flatMap { it.archiveFile }
+    additionalFiles.from(tasks.named("sourcesJar"))
     changelog.set(rootProject.file("CHANGELOG.md").readText())
     type.set(STABLE)
-    modLoaders.add(if (fabric) "fabric" else "neoforge")
-    displayName = "${property("mod.version")} for ${loader.replaceFirstChar { it.uppercase(Locale.getDefault()) }} ${sc.current.version}"
+    modLoaders.add("neoforge")
+    displayName = "${property("mod.version")} for NeoForge ${sc.current.version}"
 
     val mrRequired = requiredDeps.map { it.slug("modrinth") }
     val mrOptional = optionalDeps.map { it.slug("modrinth") }
