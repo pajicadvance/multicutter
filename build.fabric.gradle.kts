@@ -45,7 +45,7 @@ val runtimeOptionals: List<String> = sc.properties.rawOrNull("dev", "runtime_opt
 data class ModDep(val key: String, val version: String) {
     private fun meta(suffix: String): String? = findProperty("dep.$key.$suffix")?.toString()?.takeIf { it.isNotBlank() }
     val id: String get() = meta("id") ?: key
-    val coords: String? get() = meta("coords")?.replace($$"$id", id)?.replace($$"$loader", "fabric")
+    val coords: String? get() = meta("coords")?.replace($$"$id", id)?.replace($$"$loader", "fabric")?.replace($$"$mc", sc.current.version)
     val base: String get() = version.substringBefore('+').substringBefore("-beta")
     val range: String get() = meta("range") ?: ">=$base"
     fun slug(platform: String): String = meta("slug.$platform") ?: meta("slug") ?: key
@@ -210,11 +210,10 @@ publishMods {
     type.set(STABLE)
     modLoaders.add("fabric")
     displayName = "${property("mod.version")} for Fabric ${sc.current.version}"
+    dryRun = (property("publish.dry_run") as String).toBooleanStrict()
 
     val mrRequired = requiredDeps.map { it.slug("modrinth") }
-    val mrOptional = optionalDeps.map { it.slug("modrinth") }
     val cfRequired = requiredDeps.map { it.slug("curseforge") }
-    val cfOptional = optionalDeps.map { it.slug("curseforge") }
 
     modrinth {
         projectId.set("${property("publish.modrinth")}")
@@ -222,7 +221,6 @@ publishMods {
         minecraftVersions.addAll(compatibleVersions)
         environment.set(ModrinthEnvironment.valueOf(property("publish.env.mr") as String))
         requires(*mrRequired.toTypedArray())
-        optional(*mrOptional.toTypedArray())
     }
 
     curseforge {
@@ -232,6 +230,5 @@ publishMods {
         client = (property("publish.env.cf.client") as String).toBooleanStrict()
         server = (property("publish.env.cf.server") as String).toBooleanStrict()
         requires(*cfRequired.toTypedArray())
-        optional(*cfOptional.toTypedArray())
     }
 }
