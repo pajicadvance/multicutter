@@ -114,7 +114,7 @@ dependencies {
 }
 
 loom {
-    accessWidenerPath = rootProject.file("src/main/resources/aw/${sc.current.version}.ct")
+    accessWidenerPath = rootProject.file("src/main/resources/aw/${sc.current.project.substringBefore('-')}.ct")
 
     decompilerOptions.named("vineflower") {
         options.put("mark-corresponding-synthetics", "1")

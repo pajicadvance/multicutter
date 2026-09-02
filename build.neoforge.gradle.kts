@@ -1,5 +1,6 @@
 @file:Suppress("AvoidDuplicateDependencies")
 import me.modmuss50.mpp.platforms.modrinth.ModrinthEnvironment
+import kotlin.text.substringBefore
 
 plugins {
     kotlin("jvm")
@@ -120,7 +121,7 @@ dependencies {
 
 neoForge {
     version = property("loader.neo") as String
-    accessTransformers.from(rootProject.file("src/main/resources/aw/${sc.current.version}.cfg"))
+    accessTransformers.from(rootProject.file("src/main/resources/aw/${sc.current.project.substringBefore('-')}.cfg"))
     validateAccessTransformers = true
 
     mods {
