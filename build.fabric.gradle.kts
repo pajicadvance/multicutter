@@ -154,7 +154,7 @@ tasks {
             set(key, value)
         }
 
-        val ct = "aw/${sc.current.version}.ct"
+        val ct = "aw/${sc.current.project.substringBefore('-')}.ct"
         val mixinJava = "JAVA_${requiredJava.majorVersion}"
         val depends = fabricDepends
         val suggests = fabricSuggests

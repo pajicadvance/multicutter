@@ -169,7 +169,7 @@ tasks {
             set(key, value)
         }
 
-        val at = "aw/${sc.current.version}.cfg"
+        val at = "aw/${sc.current.project.substringBefore('-')}.cfg"
         val mixinJava = "JAVA_${requiredJava.majorVersion}"
         val neoDepends = neoDependencies
 
