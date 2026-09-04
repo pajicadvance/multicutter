@@ -4,6 +4,7 @@ import me.fzzyhmstrs.fzzy_config.api.ConfigApiJava;
 import me.pajic.modid.config.ModConfig;
 import me.pajic.modid.mixson.AssetPatches;
 import me.pajic.modid.mixson.DataPatches;
+import me.pajic.modid.mixson.MixsonHelper;
 import me.pajic.modid.platform.MultiLoaderUtil;
 import net.minecraft.resources.Identifier;
 import org.slf4j.Logger;
@@ -16,6 +17,7 @@ public class ModId {
     public static ModConfig CONFIG = ConfigApiJava.registerAndLoadConfig(ModConfig::new);
 
     public static void onInitialize() {
+        MixsonHelper.setDebugFlags();
         DataPatches.init();
     }
 

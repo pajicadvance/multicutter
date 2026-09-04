@@ -45,7 +45,7 @@ dep.modmenu.coords = "com.terraformersmc:$id:$version"
 mod.mc_releases = ["1.21", "1.21.1"]
 loader.neo = "21.1.244"
 dep.mixson.coords = "com.github:Mixson:$version"
-include.mixson = "2.1.0"
+include.mixson = "2.2.0"
 runtime.sodium = "0.8.12+mc1.21.1"
 
 [fabric."1.21.1"]

@@ -28,9 +28,9 @@ repositories {
     strictMaven("https://thedarkcolour.github.io/KotlinForForge/", "Kotlin Forge")
     strictMaven("https://repo.nyon.dev/releases", "Kotlin Forge Again")
     ivy {
-        url = uri("https://github.com/xameryn/Mixson/releases/download/")
+        url = uri("https://github.com/pajicadvance/Mixson/releases/download/")
         patternLayout {
-            artifact("[revision]/[module]-[revision]-${sc.current.version}-neoforge.[ext]")
+            artifact("[revision]/mixson_backport-neoforge-${sc.current.version}-[revision].[ext]")
         }
         metadataSources { artifact() }
     }

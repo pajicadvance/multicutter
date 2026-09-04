@@ -39,6 +39,7 @@ stonecutter parameters {
             replace("ValidatedIdentifier", "ValidatedIdentifier")
             replace("ResourceLocation", "Identifier")
             replace("location()", "identifier()")
+            replace("net.ramixin.mixson_backport", "net.ramixin.mixson")
         }
     }
 }

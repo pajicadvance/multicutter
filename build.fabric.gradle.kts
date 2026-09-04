@@ -24,9 +24,9 @@ repositories {
     strictMaven("https://maven.caffeinemc.net/releases", "CaffeineMC", "net.caffeinemc")
     strictMaven("https://maven.su5ed.dev/releases", "Sinytra", "org.sinytra.forgified-fabric-api")
     ivy {
-        url = uri("https://github.com/xameryn/Mixson/releases/download/")
+        url = uri("https://github.com/pajicadvance/Mixson/releases/download/")
         patternLayout {
-            artifact("[revision]/[module]-[revision]-${sc.current.version}-fabric.[ext]")
+            artifact("[revision]/mixson_backport-fabric-${sc.current.version}-[revision].[ext]")
         }
         metadataSources { artifact() }
     }
